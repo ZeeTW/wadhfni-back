@@ -6,3 +6,5 @@ const categorySchema = new Schema(
     description:{type:String}
   }
 )
+
+module.exports = categorySchema
