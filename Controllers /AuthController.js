@@ -1,5 +1,5 @@
-const { User } = require('../models')
-const middleware = require('../middleware')
+const { User } = require('../models/User')
+const middleware = require('../middleware/index')
 
 const SignUp = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ const SignUp = async (req, res) => {
         .status(400)
         .send('A user with that email has already been registered!')
     } else {
-      const user = await User.create({ name, email, passwordDigest })
+      const user = await User.create({ username, email, passwordDigest })
       res.status(200).send(user)
     }
   } catch (error) {
@@ -45,6 +45,19 @@ const SignIn = async (req, res) => {
   }
 }
 
+const UpdatePassword = async (req, res) => {
+  try {
+    const { password } = req.body
+    const { user_id } = req.params
+    const passwordDigest = await middleware.hashPassword(password)
+    await User.findByIdAndUpdate(user_id, { passwordDigest })
+    res.status(200).send({ status: 'Success', msg: 'Password updated' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ status: 'Error', msg: 'Password update failed' })
+  }
+}
+
 const CheckSession = async (req, res) => {
   const { payload } = res.locals
   res.status(200).send(payload)
@@ -53,5 +66,6 @@ const CheckSession = async (req, res) => {
 module.exports = {
   SignUp,
   SignIn,
+  UpdatePassword,
   CheckSession
 }
