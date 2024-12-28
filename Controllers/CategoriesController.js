@@ -12,24 +12,33 @@ const isAdmin = (req, res, next) => {
 const CreateCategory = async (req, res) => {
   try {
     const { name, description } = req.body
+
+    // Check if category already exists
+    const existingCategory = await Category.findOne({ name })
+    if (existingCategory) {
+      return res
+        .status(400)
+        .send({ msg: 'Category with this name already exists.' })
+    }
+
     const category = await Category.create({ name, description })
     res.status(201).send({ msg: 'Category Created', category })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to create category' })
+    res.status(500).send({ msg: 'Failed to create category', error })
   }
 }
 
-// Get All Categories will be used later
-// const GetCategories = async (req, res) => {
-//   try {
-//     const categories = await Category.find({})
-//     res.status(200).send(categories)
-//   } catch (error) {
-//     console.error(error)
-//     res.status(500).send({ msg: 'Failed to fetch categories' })
-//   }
-// }
+// Get All Categories
+const GetCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({})
+    res.status(200).send(categories)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ msg: 'Failed to fetch categories', error })
+  }
+}
 
 // 🔍 Get a Category by ID with Services
 const GetCategoryWithServices = async (req, res) => {
@@ -39,11 +48,14 @@ const GetCategoryWithServices = async (req, res) => {
     if (!category) {
       return res.status(404).send({ msg: 'Category not found' })
     }
+
     const services = await Service.find({ categoryId: category_id })
     res.status(200).send({ category, services })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to fetch category with services' })
+    res
+      .status(500)
+      .send({ msg: 'Failed to fetch category with services', error })
   }
 }
 
@@ -62,7 +74,7 @@ const UpdateCategory = async (req, res) => {
     res.status(200).send({ msg: 'Category Updated', updatedCategory })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to update category' })
+    res.status(500).send({ msg: 'Failed to update category', error })
   }
 }
 
@@ -77,13 +89,13 @@ const DeleteCategory = async (req, res) => {
     res.status(200).send({ msg: 'Category Deleted' })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to delete category' })
+    res.status(500).send({ msg: 'Failed to delete category', error })
   }
 }
 
 module.exports = {
   CreateCategory,
-  // GetCategories,
+  GetCategories,
   GetCategoryWithServices,
   UpdateCategory,
   DeleteCategory
