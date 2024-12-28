@@ -5,8 +5,9 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   passwordDigest: { type: String, required: true },
   role: { type: String },
-  location: { type: String, required: true },
+  location: { type: String},
   profileImg: { type: String }
 })
+
 
 module.exports = userSchema

@@ -1,5 +1,2 @@
 /node_modules
-# .env
-ServiceController.js
-ServiceRouter.js
 package-lock.json
