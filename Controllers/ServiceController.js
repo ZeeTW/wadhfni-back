@@ -29,20 +29,20 @@ const UpdateService = async (req, res) => {
   }
 }
 
-// const DeleteService = async (req, res) => {
-//   try {
-//     await Service.deleteOne({ _id: req.params.post_id })
-//     res
-//       .status(200)
-//       .send({ msg: 'Service Deleted', payload: req.params.service_id, status: 'Ok' })
-//   } catch (error) {
-//     throw error
-//   }
-// }
+const DeleteService = async (req, res) => {
+  try {
+    await Service.deleteOne({ _id: req.params.service_id })
+    res
+      .status(200)
+      .send({ msg: 'Service Deleted', payload: req.params.service_id, status: 'Ok' })
+  } catch (error) {
+    throw error
+  }
+}
 
 module.exports = {
   GetServices,
   CreateService,
-  UpdateService
-  // DeletePost
+  UpdateService,
+  DeleteService
 }

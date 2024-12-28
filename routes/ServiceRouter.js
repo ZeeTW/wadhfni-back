@@ -15,11 +15,11 @@ router.put(
   middleware.verifyToken,
   controller.UpdateService
 )
-// router.delete(
-//   '/:post_id',
-//   middleware.stripToken,
-//   middleware.verifyToken,
-//   controller.DeletePost
-// )
+router.delete(
+  '/:service_id',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.DeleteService
+)
 
 module.exports = router
