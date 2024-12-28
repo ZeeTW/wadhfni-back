@@ -8,7 +8,7 @@ const isAdmin = (req, res, next) => {
   return res.status(403).send({ msg: 'Access Denied: Admins Only' })
 }
 
-// 🆕 Create a New Category (Admin Only)
+// Create a New Category (Admin Only)
 const CreateCategory = async (req, res) => {
   try {
     const { name, description } = req.body
@@ -20,16 +20,16 @@ const CreateCategory = async (req, res) => {
   }
 }
 
-// 📚 Get All Categories
-const GetCategories = async (req, res) => {
-  try {
-    const categories = await Category.find({})
-    res.status(200).send(categories)
-  } catch (error) {
-    console.error(error)
-    res.status(500).send({ msg: 'Failed to fetch categories' })
-  }
-}
+// Get All Categories will be used later
+// const GetCategories = async (req, res) => {
+//   try {
+//     const categories = await Category.find({})
+//     res.status(200).send(categories)
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).send({ msg: 'Failed to fetch categories' })
+//   }
+// }
 
 // 🔍 Get a Category by ID with Services
 const GetCategoryWithServices = async (req, res) => {
@@ -47,7 +47,7 @@ const GetCategoryWithServices = async (req, res) => {
   }
 }
 
-// ✏️ Update a Category (Admin Only)
+// Update a Category (Admin Only)
 const UpdateCategory = async (req, res) => {
   try {
     const { category_id } = req.params
@@ -66,7 +66,7 @@ const UpdateCategory = async (req, res) => {
   }
 }
 
-// 🗑️ Delete a Category (Admin Only)
+// Delete a Category (Admin Only)
 const DeleteCategory = async (req, res) => {
   try {
     const { category_id } = req.params
@@ -83,7 +83,7 @@ const DeleteCategory = async (req, res) => {
 
 module.exports = {
   CreateCategory,
-  GetCategories,
+  // GetCategories,
   GetCategoryWithServices,
   UpdateCategory,
   DeleteCategory
