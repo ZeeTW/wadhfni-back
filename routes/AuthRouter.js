@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const controller = require('../Controllers/AuthController')
 const middleware = require('../middleware')
-const verifyAdmin = require('../middleware/verifyAdmin')
 
 router.post('/login', controller.Login)
 router.post('/register', controller.Register)
