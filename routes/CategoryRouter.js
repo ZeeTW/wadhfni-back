@@ -12,21 +12,21 @@ router.post(
   '/',
   middleware.stripToken,
   middleware.verifyToken,
-  middleware.verifyAdmin,
+  // middleware.verifyAdmin,
   controller.CreateCategory
 )
 router.put(
   '/:category_id',
   middleware.stripToken,
   middleware.verifyToken,
-  middleware.verifyAdmin,
+  // middleware.verifyAdmin,
   controller.UpdateCategory
 )
 router.delete(
   '/:category_id',
   middleware.stripToken,
   middleware.verifyToken,
-  middleware.verifyAdmin,
+  // middleware.verifyAdmin,
   controller.DeleteCategory
 )
 
