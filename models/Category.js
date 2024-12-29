@@ -9,4 +9,4 @@ const categorySchema = new Schema(
   { timestamps: true }
 ) // This will automatically add createdAt and updatedAt fields
 
-module.exports = mongoose.model('Category', categorySchema)
+module.exports = categorySchema

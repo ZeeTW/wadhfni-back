@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controller = require('../controllers/CategoryController')
+const controller = require('../Controllers/CategoriesController')
 const middleware = require('../middleware')
 const verifyAdmin = require('../middleware/verifyAdmin')
 
