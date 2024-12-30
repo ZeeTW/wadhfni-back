@@ -60,29 +60,17 @@ const verifyToken = (req, res, next) => {
   })
 }
 
-// Authenticate Middleware (Checking if the user is logged in)
-const authenticate = async (req, res, next) => {
-  try {
-    const token = req.headers['authorization']?.split(' ')[1]
+const validateImageUrl = (req, res, next) => {
+  const { profileImageUrl } = req.body
 
-    if (!token) {
-      return res.status(401).json({ message: 'Authentication required' })
-    }
-
-    // Verify the token using verifyToken function
-    jwt.verify(token, APP_SECRET, async (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Invalid or expired token' })
-      }
-
-      // Get user from the decoded token and attach it to req.user
-      req.user = decoded
-      next() // Proceed to the next middleware or route handler
-    })
-  } catch (error) {
-    console.error(error)
-    return res.status(401).json({ message: 'Unauthorized: Invalid token' })
+  // Simple URL regex for validation
+  const urlPattern =
+    /^https?:\/\/(?:www\.)?[a-z0-9\-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i
+  if (!profileImageUrl || !urlPattern.test(profileImageUrl)) {
+    return res.status(400).json({ message: 'Invalid image URL format' })
   }
+
+  next()
 }
 
 module.exports = {
@@ -91,5 +79,5 @@ module.exports = {
   createToken,
   stripToken,
   verifyToken,
-  authenticate
+  validateImageUrl
 }

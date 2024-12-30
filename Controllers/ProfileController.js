@@ -1,32 +1,4 @@
-const multer = require('multer')
-const path = require('path')
 const { User, Profile } = require('../models')
-const middleware = require('../middleware')
-
-// Configure multer for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/profile_pics/') // The folder to store the images
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    cb(
-      null,
-      file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)
-    )
-  }
-})
-
-const fileFilter = (req, file, cb) => {
-  // Accept only images
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true)
-  } else {
-    cb(new Error('Please upload an image file'), false)
-  }
-}
-
-const upload = multer({ storage, fileFilter })
 
 // Get the current user's profile information
 const getProfile = async (req, res) => {
@@ -35,7 +7,8 @@ const getProfile = async (req, res) => {
     const userId = req.user.id
 
     // Fetch the user and their profile data
-    const user = await User.findById(userId).populate('profile')
+    const user = await User.findById(userId).populate('profile') // Assuming 'profile' is referenced in User model
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
@@ -44,7 +17,7 @@ const getProfile = async (req, res) => {
     const profileData = {
       username: user.name,
       email: user.email,
-      profileImage: user.profile ? user.profile.profileImage : null // Add profileImage
+      profileImage: user.profile ? user.profile.profileImageUrl : null
     }
 
     return res.status(200).json(profileData)
@@ -54,35 +27,33 @@ const getProfile = async (req, res) => {
   }
 }
 
-// Handle profile image upload
-const uploadProfileImage = async (req, res) => {
+// Handle updating the profile image URL
+const updateProfileImage = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' })
-    }
-
-    // Get userId from the session or token
     const userId = req.user.id
+    const { profileImageUrl } = req.body // The image URL passed from the frontend
 
-    // Find the user
+    // Fetch the user from the database
     const user = await User.findById(userId)
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Find or create the user's profile
+    // Check if the user has an existing profile
     let profile = await Profile.findOne({ user: userId })
     if (!profile) {
+      // If no profile exists, create one
       profile = new Profile({ user: userId })
     }
 
-    // Update the profile with the new profile image URL
-    profile.profileImage = `/uploads/profile_pics/${req.file.filename}`
+    // Update the profile image URL
+    profile.profileImageUrl = profileImageUrl
     await profile.save()
 
     return res.status(200).json({
-      message: 'Profile image uploaded successfully',
-      profileImage: profile.profileImage
+      message: 'Profile image updated successfully',
+      profileImageUrl: profile.profileImageUrl
     })
   } catch (err) {
     console.error(err)
@@ -90,8 +61,7 @@ const uploadProfileImage = async (req, res) => {
   }
 }
 
-// Export the controller functions
 module.exports = {
   getProfile,
-  uploadProfileImage
+  updateProfileImage
 }

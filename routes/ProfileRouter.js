@@ -1,24 +1,20 @@
 const express = require('express')
 const {
   getProfile,
-  uploadProfileImage
+  updateProfileImage
 } = require('../Controllers/ProfileController')
-const { authenticate } = require('../middleware')
-const multer = require('multer')
+const { verifyToken, validateImageUrl } = require('../middleware/auth')
 const router = express.Router()
 
-// Configure multer to handle single file uploads
-const upload = multer()
-
 // Get current user's profile data
-router.get('/profile', authenticate, getProfile)
+router.get('/profile', verifyToken, getProfile)
 
-// Upload a new profile image
+// Update profile image URL
 router.post(
   '/profile/upload',
-  authenticate,
-  upload.single('profileImage'),
-  uploadProfileImage
+  verifyToken,
+  validateImageUrl,
+  updateProfileImage
 )
 
 module.exports = router
