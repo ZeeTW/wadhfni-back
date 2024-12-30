@@ -60,21 +60,24 @@ const verifyToken = (req, res, next) => {
   })
 }
 
-// //  Verify Admin Role
-// const verifyAdmin = (req, res, next) => {
-//   const { payload } = res.locals
+const validateImageUrl = (req, res, next) => {
+  const { profileImageUrl } = req.body
 
-//   if (payload && payload.role === 'admin') {
-//     return next()
-//   }
-//   return res.status(403).send({ msg: 'Access Denied: Admins Only' })
-// }
+  // Simple URL regex for validation
+  const urlPattern =
+    /^https?:\/\/(?:www\.)?[a-z0-9\-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i
+  if (!profileImageUrl || !urlPattern.test(profileImageUrl)) {
+    return res.status(400).json({ message: 'Invalid image URL format' })
+  }
+
+  next()
+}
 
 module.exports = {
   hashPassword,
   comparePassword,
   createToken,
   stripToken,
-  verifyToken
-  // verifyAdmin
+  verifyToken,
+  validateImageUrl
 }
