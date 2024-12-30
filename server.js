@@ -5,6 +5,8 @@ const cors = require('cors')
 const AuthRouter = require('./routes/AuthRouter')
 const ServiceRouter = require('./routes/ServiceRouter')
 const CategoryRouter = require('./routes/CategoryRouter')
+const OrderRouter = require('./routes/OrderRouter')
+const ReviewRouter = require('./routes/ReviewRouter')
 
 const PORT = process.env.PORT || 3001
 
@@ -22,6 +24,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/auth', AuthRouter)
 app.use('/services', ServiceRouter)
 app.use('/categories', CategoryRouter)
+app.use('/orders', OrderRouter)
+app.use('/reviews', ReviewRouter)
+
 
 // Default route
 app.use('/', (req, res) => {
