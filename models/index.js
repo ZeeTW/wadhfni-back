@@ -5,7 +5,7 @@ const categorySchema = require('./Category')
 
 const User = mongoose.model('User', userSchema)
 const Service = mongoose.model('Service', serviceSchema)
-const Category = mongoose.model('./Category', categorySchema)
+const Category = mongoose.model('Category', categorySchema)
 
 module.exports = {
   User,

@@ -43,33 +43,32 @@ const stripToken = (req, res, next) => {
 
 //  Verify Token
 const verifyToken = (req, res, next) => {
-  const { token } = res.locals
+  const token = req.headers['authorization']?.split(' ')[1] // Assuming the token is sent as 'Bearer <token>'
 
-  try {
-    let payload = jwt.verify(token, APP_SECRET)
+  if (!token) {
+    return res.status(403).send({ msg: 'Token is required' })
+  }
 
-    if (payload) {
-      res.locals.payload = payload
-      return next()
+  jwt.verify(token, process.env.APP_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ msg: 'Invalid or expired token' })
     }
-    res
-      .status(401)
-      .send({ status: 'Error', msg: 'Unauthorized: Invalid Token' })
-  } catch (error) {
-    console.error(error)
-    res.status(401).send({ status: 'Error', msg: 'Verify Token Error!' })
-  }
+
+    // Attach the decoded user info to the request object (req.user)
+    req.user = decoded
+    next()
+  })
 }
 
-//  Verify Admin Role
-const verifyAdmin = (req, res, next) => {
-  const { payload } = res.locals
+// //  Verify Admin Role
+// const verifyAdmin = (req, res, next) => {
+//   const { payload } = res.locals
 
-  if (payload && payload.role === 'admin') {
-    return next()
-  }
-  return res.status(403).send({ msg: 'Access Denied: Admins Only' })
-}
+//   if (payload && payload.role === 'admin') {
+//     return next()
+//   }
+//   return res.status(403).send({ msg: 'Access Denied: Admins Only' })
+// }
 
 module.exports = {
   hashPassword,

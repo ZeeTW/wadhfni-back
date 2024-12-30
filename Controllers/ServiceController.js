@@ -20,9 +20,13 @@ const CreateService = async (req, res) => {
 
 const UpdateService = async (req, res) => {
   try {
-    const service = await Service.findByIdAndUpdate(req.params.service_id, req.body, {
-      new: true
-    })
+    const service = await Service.findByIdAndUpdate(
+      req.params.service_id,
+      req.body,
+      {
+        new: true
+      }
+    )
     res.status(200).send(service)
   } catch (error) {
     throw error
@@ -32,9 +36,11 @@ const UpdateService = async (req, res) => {
 const DeleteService = async (req, res) => {
   try {
     await Service.deleteOne({ _id: req.params.service_id })
-    res
-      .status(200)
-      .send({ msg: 'Service Deleted', payload: req.params.service_id, status: 'Ok' })
+    res.status(200).send({
+      msg: 'Service Deleted',
+      payload: req.params.service_id,
+      status: 'Ok'
+    })
   } catch (error) {
     throw error
   }
