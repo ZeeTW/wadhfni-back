@@ -7,6 +7,7 @@ const ServiceRouter = require('./routes/ServiceRouter')
 const CategoryRouter = require('./routes/CategoryRouter')
 const OrderRouter = require('./routes/OrderRouter')
 const ReviewRouter = require('./routes/ReviewRouter')
+const ProfileRouter = require('./routes/ProfileRouter')
 
 const PORT = process.env.PORT || 3001
 
@@ -26,7 +27,7 @@ app.use('/services', ServiceRouter)
 app.use('/categories', CategoryRouter)
 app.use('/orders', OrderRouter)
 app.use('/reviews', ReviewRouter)
-
+app.use('/profile', ProfileRouter)
 
 // Default route
 app.use('/', (req, res) => {
