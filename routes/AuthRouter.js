@@ -17,4 +17,12 @@ router.get(
   controller.CheckSession
 )
 
+// router.put(
+//   '/make-admin/:user_id',
+//   middleware.stripToken,
+//   middleware.verifyToken
+//   // verifyAdmin, // Only an existing admin can promote another user
+//   // controller.MakeAdmin
+// )
+
 module.exports = router
