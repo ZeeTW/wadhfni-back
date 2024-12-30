@@ -96,5 +96,6 @@ module.exports = {
   Register,
   Login,
   UpdatePassword,
+  // logout,
   CheckSession
 }
