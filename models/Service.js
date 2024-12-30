@@ -8,7 +8,12 @@ const serviceSchema = new Schema({
   price: { type: Number },
   duration: { type: String },
   status: { type: String },
-  categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' }
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
+  }
 })
 
 module.exports = serviceSchema
+

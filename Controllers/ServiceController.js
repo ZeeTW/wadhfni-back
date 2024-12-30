@@ -2,12 +2,32 @@ const { Service } = require('../models')
 
 const GetServices = async (req, res) => {
   try {
-    const services = await Service.find({})
+    const services = await Service.find({
+      categoryId: req.query.categoryId
+    }).populate('categoryId')
     res.status(200).send(services)
   } catch (error) {
     throw error
   }
 }
+// const GetServices = async (req, res) => {
+//   try {
+//     if(req.query){
+//       const services = await Service.find({
+//         categoryId: req.query.categoryId
+//       }).populate('categoryId')
+//       res.status(200).send(services)
+//     } else if (req.query.service_id){
+//       const services = await Service.find({
+//         serviceId: req.query.serviceId
+//       }).populate('categoryId')
+//     }
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+
 
 const CreateService = async (req, res) => {
   try {
