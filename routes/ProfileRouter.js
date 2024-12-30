@@ -3,7 +3,7 @@ const {
   getProfile,
   updateProfileImage
 } = require('../Controllers/ProfileController')
-const { verifyToken, validateImageUrl } = require('../middleware/auth')
+const { verifyToken, validateImageUrl } = require('../middleware')
 const router = express.Router()
 
 // Get current user's profile data
