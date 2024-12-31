@@ -34,6 +34,16 @@ app.use('/', (req, res) => {
   res.send('Connected!')
 })
 
+app.get('/api/services/category/:categoryId', async (req, res) => {
+  const { categoryId } = req.params
+  try {
+    const services = await Service.find({ categoryId })
+    res.json(services)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch services' })
+  }
+})
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Running Express server on Port ${PORT} . . .`)
