@@ -11,15 +11,13 @@ const GetOrders = async (req, res) => {
 
 const GetOrderById = async (req, res) => {
   try {
-    const { orderId } = req.params
-
-    const order = await Order.findById(orderId).populate('serviceId')
+    const { order_id } = req.params
+    const order = await Order.findById(order_id).populate('serviceId')
 
     if (!order) {
       return res.status(404).json({ message: 'Order not found' })
     }
 
-    // Attach service title directly to order
     const orderWithServiceTitle = {
       ...order._doc,
       title: order.serviceId?.title || 'N/A'
