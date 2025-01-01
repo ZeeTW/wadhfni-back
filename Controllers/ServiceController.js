@@ -10,24 +10,21 @@ const GetServices = async (req, res) => {
     throw error
   }
 }
-// const GetServices = async (req, res) => {
-//   try {
-//     if(req.query){
-//       const services = await Service.find({
-//         categoryId: req.query.categoryId
-//       }).populate('categoryId')
-//       res.status(200).send(services)
-//     } else if (req.query.service_id){
-//       const services = await Service.find({
-//         serviceId: req.query.serviceId
-//       }).populate('categoryId')
-//     }
-//   } catch (error) {
-//     throw error
-//   }
-// }
 
-
+const GetServiceById = async (req, res) => {
+  try {
+    const service = await Service.findById(req.params.service_id).populate(
+      'categoryId'
+    )
+    if (!service) {
+      return res.status(404).send({ message: 'Service not found' })
+    }
+    res.status(200).send(service)
+  } catch (error) {
+    console.error('Error fetching service:', error)
+    res.status(500).send({ message: 'Error fetching service' })
+  }
+}
 
 const CreateService = async (req, res) => {
   try {
@@ -68,6 +65,7 @@ const DeleteService = async (req, res) => {
 
 module.exports = {
   GetServices,
+  GetServiceById,
   CreateService,
   UpdateService,
   DeleteService
