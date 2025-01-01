@@ -5,8 +5,8 @@ const middleware = require('../middleware')
 router.get('/', controller.GetOrders)
 router.post(
   '/',
-  middleware.stripToken,
-  middleware.verifyToken,
+  // middleware.stripToken,
+  // middleware.verifyToken,
   controller.CreateOrder
 )
 

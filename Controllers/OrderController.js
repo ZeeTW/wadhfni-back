@@ -11,10 +11,20 @@ const GetOrders = async (req, res) => {
 
 const CreateOrder = async (req, res) => {
   try {
-    const order = await Order.create({ ...req.body })
-    res.status(200).send(order)
+    const { serviceId } = req.body
+    const newOrder = new Order({
+      serviceId,
+      status: 'pending', // You can default status here
+      price: 0, // Or some default value or calculate based on service
+      order_date: new Date(),
+      payment_status: 'pending'
+    })
+
+    await newOrder.save()
+    res.status(200).send(newOrder)
   } catch (error) {
-    throw error
+    console.error(error)
+    res.status(500).send({ msg: 'Failed to create order' })
   }
 }
 
@@ -32,13 +42,11 @@ const UpdateOrder = async (req, res) => {
 const DeleteOrder = async (req, res) => {
   try {
     await Order.deleteOne({ _id: req.params.order_id })
-    res
-      .status(200)
-      .send({
-        msg: 'Order Deleted',
-        payload: req.params.order_id,
-        status: 'Ok'
-      })
+    res.status(200).send({
+      msg: 'Order Deleted',
+      payload: req.params.order_id,
+      status: 'Ok'
+    })
   } catch (error) {
     throw error
   }
