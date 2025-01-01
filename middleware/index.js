@@ -43,13 +43,12 @@ const stripToken = (req, res, next) => {
 
 //  Verify Token
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1] // Assuming the token is sent as 'Bearer <token>'
-
+  const token = req.headers['authorization']?.split(' ')[1] 
   if (!token) {
     return res.status(403).send({ msg: 'Token is required' })
   }
 
-  jwt.verify(token, process.env.APP_SECRET, (err, decoded) => {
+  const decoded = jwt.verify(token, process.env.APP_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).send({ msg: 'Invalid or expired token' })
     }
