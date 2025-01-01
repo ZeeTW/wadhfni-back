@@ -12,7 +12,8 @@ const userSchema = new Schema({
     required: true
   },
   location: { type: String },
-  profileImg: { type: String }
+  // profileImg: { type: String },
+  profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }
 })
 
 module.exports = userSchema

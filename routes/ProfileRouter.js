@@ -1,17 +1,20 @@
 const express = require('express')
 const {
   getProfile,
-  updateProfileImage
+  updateProfileImage,
+  updateProfile
 } = require('../Controllers/ProfileController')
 const { verifyToken, validateImageUrl } = require('../middleware')
 const router = express.Router()
 
 // Get current user's profile data
-router.get('/profile', verifyToken, getProfile)
+router.get('/', verifyToken, getProfile)
+
+router.put('/', verifyToken, updateProfile)
 
 // Update profile image URL
 router.post(
-  '/profile/upload',
+  '/upload',
   verifyToken,
   validateImageUrl,
   updateProfileImage
