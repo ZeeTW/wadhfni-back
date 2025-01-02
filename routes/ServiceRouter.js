@@ -5,6 +5,8 @@ const middleware = require('../middleware')
 // Get all services
 router.get('/', controller.GetServices)
 
+router.get('/user', middleware.verifyToken, controller.GetUserServices)
+
 // Get a single service by its ID
 router.get('/:service_id', controller.GetServiceById) // New route for fetching service by ID
 

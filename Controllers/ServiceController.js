@@ -10,6 +10,16 @@ const GetServices = async (req, res) => {
     throw error
   }
 }
+const GetUserServices = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const services = await Service.find({ user: userId })
+    res.status(200).json(services)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to fetch services' })
+  }
+}
 
 const GetServiceById = async (req, res) => {
   try {
@@ -52,19 +62,18 @@ const UpdateService = async (req, res) => {
 
 const DeleteService = async (req, res) => {
   try {
-    await Service.deleteOne({ _id: req.params.service_id })
-    res.status(200).send({
-      msg: 'Service Deleted',
-      payload: req.params.service_id,
-      status: 'Ok'
-    })
+    const { serviceId } = req.params
+    await Service.findByIdAndDelete(serviceId)
+    res.status(200).json({ message: 'Service deleted successfully' })
   } catch (error) {
-    throw error
+    console.error(error)
+    res.status(500).json({ message: 'Failed to delete service' })
   }
 }
 
 module.exports = {
   GetServices,
+  GetUserServices,
   GetServiceById,
   CreateService,
   UpdateService,
