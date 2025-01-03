@@ -8,22 +8,38 @@ const GetOrders = async (req, res) => {
     throw error
   }
 }
+const GetUserOrders = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const orders = await Order.find({ user: userId }).populate('serviceId')
+    res.status(200).json(orders)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to fetch orders' })
+  }
+}
 
 const GetOrderById = async (req, res) => {
   try {
     const { order_id } = req.params
-    const order = await Order.findById(order_id).populate('serviceId')
+    console.log('order_id', order_id)
+    console.log('req.params', req.params)
+    const order = await Order.find({
+      userId: '677646b34c20dc5095a1eafb'
+    }).populate('serviceId')
 
     if (!order) {
       return res.status(404).json({ message: 'Order not found' })
     }
+
+    console.log('order:', order)
 
     const orderWithServiceTitle = {
       ...order._doc,
       title: order.serviceId?.title || 'N/A'
     }
 
-    res.status(200).json(orderWithServiceTitle)
+    res.status(200).json(order)
   } catch (error) {
     console.error('Failed to fetch order:', error)
     res.status(500).json({ message: 'Failed to fetch order' })
@@ -39,8 +55,11 @@ const CreateOrder = async (req, res) => {
       return res.status(400).send('Service ID and price are required')
     }
 
+    const userId = req.user.id
+
     // Create the order
     const order = await Order.create({
+      userId,
       serviceId,
       status: status || 'pending',
       price,
@@ -50,6 +69,7 @@ const CreateOrder = async (req, res) => {
 
     // Populate service details for confirmation
     await order.populate('serviceId')
+    await order.populate('userId')
 
     res.status(201).json(order)
   } catch (error) {
@@ -84,6 +104,7 @@ const DeleteOrder = async (req, res) => {
 
 module.exports = {
   GetOrders,
+  GetUserOrders,
   GetOrderById,
   CreateOrder,
   UpdateOrder,

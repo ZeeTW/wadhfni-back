@@ -4,10 +4,18 @@ const middleware = require('../middleware')
 
 router.get('/', controller.GetOrders)
 router.get('/:order_id', controller.GetOrderById)
+
+router.get(
+  '/user-orders',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.GetUserOrders
+)
+
 router.post(
   '/',
-  // middleware.stripToken,
-  // middleware.verifyToken,
+  middleware.stripToken,
+  middleware.verifyToken,
   controller.CreateOrder
 )
 
