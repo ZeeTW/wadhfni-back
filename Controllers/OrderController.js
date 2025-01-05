@@ -23,20 +23,10 @@ const GetOrderById = async (req, res) => {
   try {
     const { order_id } = req.params
     console.log('order_id', order_id)
-    console.log('req.params', req.params)
-    const order = await Order.find({
-      userId: '677646b34c20dc5095a1eafb'
-    }).populate('serviceId')
+    const order = await Order.findById(order_id).populate('serviceId')
 
     if (!order) {
       return res.status(404).json({ message: 'Order not found' })
-    }
-
-    console.log('order:', order)
-
-    const orderWithServiceTitle = {
-      ...order._doc,
-      title: order.serviceId?.title || 'N/A'
     }
 
     res.status(200).json(order)
@@ -46,18 +36,43 @@ const GetOrderById = async (req, res) => {
   }
 }
 
+// const GetOrderById = async (req, res) => {
+//   try {
+//     const { order_id } = req.params
+//     console.log('order_id', order_id)
+//     console.log('req.params', req.params)
+//     const order = await Order.find({
+//       userId: '677646b34c20dc5095a1eafb'
+//     }).populate('serviceId')
+
+//     if (!order) {
+//       return res.status(404).json({ message: 'Order not found' })
+//     }
+
+//     console.log('order:', order)
+
+//     // const orderWithServiceTitle = {
+//     //   ...order._doc,
+//     //   title: order.serviceId?.title || 'N/A'
+//     // }
+
+//     res.status(200).json(order)
+//   } catch (error) {
+//     console.error('Failed to fetch order:', error)
+//     res.status(500).json({ message: 'Failed to fetch order' })
+//   }
+// }
+
 const CreateOrder = async (req, res) => {
   try {
     const { serviceId, status, price, order_date, payment_status } = req.body
 
-    // Validate required fields
     if (!serviceId || !price) {
       return res.status(400).send('Service ID and price are required')
     }
 
     const userId = req.user.id
 
-    // Create the order
     const order = await Order.create({
       userId,
       serviceId,
@@ -67,7 +82,6 @@ const CreateOrder = async (req, res) => {
       payment_status: payment_status || 'pending'
     })
 
-    // Populate service details for confirmation
     await order.populate('serviceId')
     await order.populate('userId')
 

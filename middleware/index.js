@@ -43,7 +43,7 @@ const stripToken = (req, res, next) => {
 
 //  Verify Token
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1] 
+  const token = req.headers['authorization']?.split(' ')[1]
   if (!token) {
     return res.status(403).send({ msg: 'Token is required' })
   }
@@ -59,24 +59,24 @@ const verifyToken = (req, res, next) => {
   })
 }
 
-const validateImageUrl = (req, res, next) => {
-  const { profileImageUrl } = req.body
+// const validateImageUrl = (req, res, next) => {
+//   const { profileImageUrl } = req.body
 
-  // Simple URL regex for validation
-  const urlPattern =
-    /^https?:\/\/(?:www\.)?[a-z0-9\-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i
-  if (!profileImageUrl || !urlPattern.test(profileImageUrl)) {
-    return res.status(400).json({ message: 'Invalid image URL format' })
-  }
+//   // Simple URL regex for validation
+//   const urlPattern =
+//     /^https?:\/\/(?:www\.)?[a-z0-9\-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i
+//   if (!profileImageUrl || !urlPattern.test(profileImageUrl)) {
+//     return res.status(400).json({ message: 'Invalid image URL format' })
+//   }
 
-  next()
-}
+//   next()
+// }
 
 module.exports = {
   hashPassword,
   comparePassword,
   createToken,
   stripToken,
-  verifyToken,
-  validateImageUrl
+  verifyToken
+  // validateImageUrl
 }

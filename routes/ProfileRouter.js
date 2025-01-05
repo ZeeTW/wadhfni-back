@@ -12,12 +12,7 @@ router.get('/', verifyToken, getProfile)
 
 router.put('/', verifyToken, updateProfile)
 
-// Update profile image URL
-router.post(
-  '/upload',
-  verifyToken,
-  validateImageUrl,
-  updateProfileImage
-)
+// Update profilei mage URL
+router.post('/upload', verifyToken, updateProfileImage)
 
 module.exports = router
