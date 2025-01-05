@@ -38,9 +38,12 @@ const GetServiceById = async (req, res) => {
 
 const CreateService = async (req, res) => {
   try {
+    const { title, price, description, duration, categoryId } = req.body
+
     const service = await Service.create({ ...req.body })
     res.status(200).send(service)
   } catch (error) {
+    console.log(error)
     throw error
   }
 }
