@@ -73,6 +73,19 @@ const DeleteService = async (req, res) => {
     res.status(500).json({ message: 'Failed to delete service' })
   }
 }
+// In services controller
+const SearchServices = async (req, res) => {
+  try {
+    const { query } = req.query
+    const services = await Service.find({
+      title: { $regex: query, $options: 'i' } // Case-insensitive search
+    })
+    res.status(200).json(services)
+  } catch (error) {
+    console.error('Error in search:', error)
+    res.status(500).json({ message: 'Failed to search services' })
+  }
+}
 
 module.exports = {
   GetServices,
@@ -81,4 +94,5 @@ module.exports = {
   CreateService,
   UpdateService,
   DeleteService
+  // SearchServices
 }
