@@ -66,30 +66,47 @@ const updateProfileImage = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id
-    const { name, email, location, profileImg } = req.body // Get the updated profile data from request body
+    const { name, email, location, role } = req.body
 
-    const user = await User.findById(userId) // Find user by ID
+    const user = await User.findById(userId)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Update user details
     if (name) user.name = name
     if (email) user.email = email
     if (location) user.location = location
-    if (profileImg) user.profileImg = profileImg
+    if (role) user.role = role
 
-    await user.save() // Save the updated user
+    await user.save()
 
-    return res.status(200).json({ message: 'Profile updated successfully' })
+    return res
+      .status(200)
+      .json({ message: 'Profile updated successfully', user })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ message: 'Server error' })
   }
 }
 
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.user.id
+    console.log('User ID:', req.params.id)
+    console.log('Request body:', req.body)
+    const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+      new: true
+    })
+    res.status(200).send(user)
+  } catch (error) {
+    console.error('Error updating user:', error)
+    res.status(400).send({ msg: 'error updating', error })
+  }
+}
+
 module.exports = {
   getProfile,
   updateProfileImage,
-  updateProfile
+  updateProfile,
+  updateUser
 }

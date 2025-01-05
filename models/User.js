@@ -7,7 +7,6 @@ const userSchema = new Schema({
   passwordDigest: { type: String, required: true },
   role: {
     type: String,
-    default: 'user',
     enum: ['freelancer', 'employer'],
     required: true
   },

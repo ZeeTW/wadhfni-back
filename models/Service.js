@@ -7,7 +7,6 @@ const serviceSchema = new Schema({
   description: { type: String },
   price: { type: Number },
   duration: { type: String },
-  status: { type: String },
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
