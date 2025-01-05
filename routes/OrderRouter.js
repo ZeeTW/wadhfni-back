@@ -3,6 +3,18 @@ const controller = require('../Controllers/OrderController')
 const middleware = require('../middleware')
 
 router.get('/', controller.GetOrders)
+
+router.get('/:order_id', controller.GetOrderById)
+
+// router.get('/:order_id', controller.FetchOrder)
+
+router.get(
+  '/user-orders',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.GetUserOrders
+)
+
 router.post(
   '/',
   middleware.stripToken,

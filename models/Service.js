@@ -15,4 +15,3 @@ const serviceSchema = new Schema({
 })
 
 module.exports = serviceSchema
-
