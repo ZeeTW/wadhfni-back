@@ -1,6 +1,5 @@
 const { Category } = require('../models')
 
-// 📝 Get All Categories
 const GetCategories = async (req, res) => {
   try {
     const categories = await Category.find({})
@@ -11,12 +10,10 @@ const GetCategories = async (req, res) => {
   }
 }
 
-// 📝 Create a New Category
 const CreateCategory = async (req, res) => {
   try {
     const { name, description } = req.body
 
-    // Check if the category already exists
     const existingCategory = await Category.findOne({ name })
     if (existingCategory) {
       return res
@@ -24,7 +21,6 @@ const CreateCategory = async (req, res) => {
         .send({ msg: 'Category with this name already exists.' })
     }
 
-    // Create the new category
     const category = await Category.create({ name, description })
     res.status(201).send({ msg: 'Category Created', category })
   } catch (error) {
@@ -33,7 +29,6 @@ const CreateCategory = async (req, res) => {
   }
 }
 
-// 🛠️ Update a Category by ID
 const UpdateCategory = async (req, res) => {
   try {
     const { category_id } = req.params
@@ -54,7 +49,6 @@ const UpdateCategory = async (req, res) => {
   }
 }
 
-// 🗑️ Delete a Category by ID
 const DeleteCategory = async (req, res) => {
   try {
     const { category_id } = req.params

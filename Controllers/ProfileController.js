@@ -1,17 +1,15 @@
 const { User, Profile } = require('../models')
 
-// Fetch user profile
 const getProfile = async (req, res) => {
   console.log(req.user)
   try {
     const userId = req.user.id
-    const user = await User.findById(userId) // Find user by ID (userId comes from the token)
+    const user = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Send the user profile data
     const profileData = {
       name: user.name,
       email: user.email,
@@ -25,31 +23,25 @@ const getProfile = async (req, res) => {
     return res.status(500).json({ message: 'Server error' })
   }
 }
-// Handle updating the profile image URL
 const updateProfileImage = async (req, res) => {
   try {
     const userId = req.user.id
-    const { profileImageUrl } = req.body // The image URL passed from the frontend
+    const { profileImageUrl } = req.body
 
-    // Fetch the user from the database
     const user = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Fetch or create the user's profile
     let profile = await Profile.findOne({ user: userId })
     if (!profile) {
-      // If no profile exists, create one
       profile = new Profile({ user: userId })
     }
 
-    // Update the profile image URL
     profile.profileImage = profileImageUrl
     await profile.save()
 
-    // Update the reference in the User model as well (if needed)
     user.profileImg = profileImageUrl
     await user.save()
 
