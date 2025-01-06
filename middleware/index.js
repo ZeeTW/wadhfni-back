@@ -41,22 +41,22 @@ const stripToken = (req, res, next) => {
   }
 }
 
-//  Verify Token
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]
-  if (!token) {
-    return res.status(403).send({ msg: 'Token is required' })
-  }
-
-  const decoded = jwt.verify(token, process.env.APP_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ msg: 'Invalid or expired token' })
+  const { token } = res.locals
+  // Gets the token stored in the request lifecycle state
+  try {
+    let payload = jwt.verify(token, APP_SECRET)
+    // Verifies the token is legit
+    if (payload) {
+      res.locals.payload = payload // Passes the decoded payload to the next function
+      // Calls the next function if the token is valid
+      return next()
     }
-
-    // Attach the decoded user info to the request object (req.user)
-    req.user = decoded
-    next()
-  })
+    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+  } catch (error) {
+    console.log(error)
+    res.status(401).send({ status: 'Error', msg: 'Verify Token Error!' })
+  }
 }
 
 // const validateImageUrl = (req, res, next) => {
