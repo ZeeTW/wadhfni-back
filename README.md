@@ -1,6 +1,6 @@
 # Wa'9fni Application
 
-![Alt text for the image](./images/Screenshot%202024-12-25%20at%2019.10.32.png)
+![what its supposed to look like](./
 
 ## Project Description
 
@@ -21,13 +21,17 @@ wondering How We are getting this work done?? take a look at our [Trello](https:
 
 ## Final Product Photos (in Progress)
 
+![Sign In Page](./images/Screenshot%202025-01-06%20at%2008.57.42.png)
+![Sign Up Page](./images/Screenshot%202025-01-06%20at%2008.58.01.png)
+![Home Page](./images/Screenshot%202025-01-06%20at%2008.58.20.png)
+
 ## Future Enhancement
 
-This is a work in progress
-
-## Credits
-
-A work in progress
+- build a chat with me section between employer and freelancer.
+- do more with the css.
+- have a comment section
+- update order/service .
+- checkout.
 
 ## Collaborators:
 
@@ -35,5 +39,3 @@ Project Done By :
 
 - [Maha Alabsi](https://github.com/mahalabsi?tab=repositories)
 - [Zainab Alafoo](https://github.com/ZeeTW?tab=repositories)
-- [Ahmed Almutawa](https://github.com/ahmed121234?tab=repositories)
-- [Abdullah Khalid](https://github.com/AK0275?tab=repositories)
